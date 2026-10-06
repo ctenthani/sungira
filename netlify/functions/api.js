@@ -14,7 +14,8 @@ exports.handler=async event=>{
   if(action!=='public'&&!actor)return reply(401,{error:'Please sign in to continue.'});
   const seedAllowed=!!email&&!!process.env.SEED_OWNER_EMAIL&&email.toLowerCase()===process.env.SEED_OWNER_EMAIL.trim().toLowerCase();
   if(action==='seed_status')return reply(200,{allowed:seedAllowed});
-  if(action==='create'&&body.data?.seed&&!seedAllowed)return reply(403,{error:'This prepared church list is reserved for the designated organiser.'});
+  if((action==='church_import'||action==='create'&&body.data?.seed)&&!seedAllowed)return reply(403,{error:'This prepared church list is reserved for the designated organiser.'});
+  if(action==='church_import'||action==='create'&&body.data?.seed)body.data={...body.data,churchSeed:require('../../database/church-v6.json')};
   const response=await fetch(url+'/rest/v1/rpc/sungira_action',{method:'POST',headers:{apikey:key,Authorization:'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({actor_id:actor,actor_email:email,action_name:action,payload:body.data||{}})});
   const result=await response.json();if(!response.ok){const message=result.message||'The request could not be completed.';return reply(result.code==='42501'?403:400,{error:message})}
   return reply(200,result);

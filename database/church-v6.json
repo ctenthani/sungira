@@ -1,0 +1,351 @@
+{
+  "names": [
+    "Bambo ndi Mayi Alafuledi",
+    "Mayi Cathreen Zambezi",
+    "Mayi Chabwera",
+    "Bambo ndi Mayi Chavula",
+    "Bambo ndi Mayi Chimombo",
+    "Bambo ndi Mayi Chimpololo",
+    "Bambo ndi Mayi D Kanagwa",
+    "Mayi D Langwa",
+    "Mayi Dina Dinala",
+    "Mayi Esther Sumani",
+    "Mayi Felster Chifumbi",
+    "Mayi Fordson",
+    "Mayi Galasiyano",
+    "Mayi Galileya Bartomeo",
+    "Gloria",
+    "Mayi Gogoda",
+    "Bambo ndi Mayi Goliani",
+    "Mayi Hawadi",
+    "Bambo ndi Mayi Haward",
+    "Mayi Immaculate Maleka",
+    "Mayi Immaculate Mpingasa",
+    "Bambo ndi Mayi Jimson Chiwanda",
+    "Bambo ndi Mayi Kanike",
+    "Mayi Kantwela",
+    "Bambo ndi Mayi Leonard",
+    "Mayi Maguja",
+    "Bambo ndi Mayi Makoka",
+    "Bambo ndi Mayi Malata",
+    "Bambo ndi Mayi Manyawa",
+    "Bambo Mbewe",
+    "Mayi Mbingwani",
+    "Bambo ndi Mayi Mnyanga",
+    "Bambo ndi Mayi Mofolo",
+    "Mayi Moto",
+    "Mayi Mphonde",
+    "Bambo ndi Mayi Mwale",
+    "Bambo ndi Mayi Mwinjilo",
+    "Bambo ndi Mayi Mwinjiro",
+    "Bambo ndi Mayi Njobvuyalema",
+    "Bambo ndi Mayi Nkhata",
+    "Bambo ndi Mayi Nsabwe",
+    "Pa Nyengani",
+    "Bambo ndi Mayi Pambaya",
+    "Mayi Phales Paul",
+    "Mayi Phekani",
+    "Bambo ndi Mayi R Kanagwa",
+    "Bambo ndi Mayi Raphael",
+    "Bambo ndi Mayi Rhodricks",
+    "Sibongire",
+    "Bambo ndi Mayo Sochera",
+    "Bambo ndi Mayi Taumbe",
+    "Bambo ndi Mayi Tenthani",
+    "Ulemu Mulula"
+  ],
+  "aliases": {
+    "Mayi Esther Robert Sumani": "Mayi Esther Sumani",
+    "Mayi Margaret Mbingwani": "Mayi Mbingwani",
+    "Mayi C Zambezi": "Mayi Cathreen Zambezi",
+    "Bambo ndi Mayi Sochera": "Bambo ndi Mayo Sochera"
+  },
+  "items": [
+    {
+      "description": "Hostia",
+      "quantity": null,
+      "unit": "quantity to confirm",
+      "donor": "",
+      "sourceChecked": false,
+      "quantityNote": ""
+    },
+    {
+      "description": "Mass wine",
+      "quantity": null,
+      "unit": "quantity to confirm",
+      "donor": "",
+      "sourceChecked": false,
+      "quantityNote": ""
+    },
+    {
+      "description": "Rice",
+      "quantity": 5,
+      "unit": "kg",
+      "donor": "",
+      "sourceChecked": false,
+      "quantityNote": ""
+    },
+    {
+      "description": "Irish potatoes",
+      "quantity": 5,
+      "unit": "litres",
+      "donor": "",
+      "sourceChecked": true,
+      "quantityNote": "Source says 5 lt; confirm measure"
+    },
+    {
+      "description": "Sweet potatoes",
+      "quantity": null,
+      "unit": "quantity to confirm",
+      "donor": "Bambo ndi Mayi Tenthani",
+      "sourceChecked": true,
+      "quantityNote": ""
+    },
+    {
+      "description": "Spaghetti",
+      "quantity": 4,
+      "unit": "packets",
+      "donor": "Bambo ndi Mayi Manyawa",
+      "sourceChecked": true,
+      "quantityNote": ""
+    },
+    {
+      "description": "Macaroni",
+      "quantity": 2,
+      "unit": "packets",
+      "donor": "Gloria",
+      "sourceChecked": true,
+      "quantityNote": ""
+    },
+    {
+      "description": "Cooking oil",
+      "quantity": 4,
+      "unit": "litres",
+      "donor": "",
+      "sourceChecked": false,
+      "quantityNote": ""
+    },
+    {
+      "description": "Beef",
+      "quantity": null,
+      "unit": "kg",
+      "donor": "",
+      "sourceChecked": false,
+      "quantityNote": "2–3 kg"
+    },
+    {
+      "description": "Pork",
+      "quantity": 2,
+      "unit": "kg",
+      "donor": "",
+      "sourceChecked": false,
+      "quantityNote": ""
+    },
+    {
+      "description": "Chickens",
+      "quantity": 3,
+      "unit": "chickens",
+      "donor": "",
+      "sourceChecked": false,
+      "quantityNote": ""
+    },
+    {
+      "description": "Fish (fresh / dry)",
+      "quantity": null,
+      "unit": "quantity to confirm",
+      "donor": "",
+      "sourceChecked": false,
+      "quantityNote": ""
+    },
+    {
+      "description": "Eggs",
+      "quantity": 1,
+      "unit": "tray",
+      "donor": "Sibongire",
+      "sourceChecked": true,
+      "quantityNote": ""
+    },
+    {
+      "description": "Eggs",
+      "quantity": 1,
+      "unit": "tray",
+      "donor": "Bambo ndi Mayi Chavula",
+      "sourceChecked": true,
+      "quantityNote": ""
+    },
+    {
+      "description": "Beans / Nsawawa",
+      "quantity": null,
+      "unit": "quantity to confirm",
+      "donor": "",
+      "sourceChecked": false,
+      "quantityNote": ""
+    },
+    {
+      "description": "Tomatoes and onions",
+      "quantity": null,
+      "unit": "quantity to confirm",
+      "donor": "Bambo ndi Mayi Tenthani",
+      "sourceChecked": true,
+      "quantityNote": ""
+    },
+    {
+      "description": "Vegetables, zitheba, carrots and cabbage",
+      "quantity": null,
+      "unit": "quantity to confirm",
+      "donor": "",
+      "sourceChecked": false,
+      "quantityNote": ""
+    },
+    {
+      "description": "100% juice",
+      "quantity": 2,
+      "unit": "litres",
+      "donor": "Bambo ndi Mayi Tenthani",
+      "sourceChecked": true,
+      "quantityNote": ""
+    },
+    {
+      "description": "Sobo",
+      "quantity": 4,
+      "unit": "litres",
+      "donor": "",
+      "sourceChecked": false,
+      "quantityNote": ""
+    },
+    {
+      "description": "Soft drinks",
+      "quantity": 1,
+      "unit": "crate",
+      "donor": "Bambo ndi Mayi Mwale",
+      "sourceChecked": true,
+      "quantityNote": ""
+    },
+    {
+      "description": "Bottled water",
+      "quantity": 1,
+      "unit": "crate",
+      "donor": "Ulemu Mulula",
+      "sourceChecked": true,
+      "quantityNote": ""
+    },
+    {
+      "description": "Powder soap",
+      "quantity": 2,
+      "unit": "kg",
+      "donor": "",
+      "sourceChecked": false,
+      "quantityNote": ""
+    },
+    {
+      "description": "Protex soap",
+      "quantity": 5,
+      "unit": "bars",
+      "donor": "",
+      "sourceChecked": false,
+      "quantityNote": ""
+    },
+    {
+      "description": "Dishwashing liquid",
+      "quantity": 2,
+      "unit": "containers",
+      "donor": "",
+      "sourceChecked": false,
+      "quantityNote": "Container size to confirm"
+    },
+    {
+      "description": "Handy Andy",
+      "quantity": 2,
+      "unit": "containers",
+      "donor": "",
+      "sourceChecked": false,
+      "quantityNote": "Container size to confirm"
+    },
+    {
+      "description": "Fresh milk",
+      "quantity": null,
+      "unit": "carton",
+      "donor": "",
+      "sourceChecked": false,
+      "quantityNote": "Source says cartoon; quantity to confirm"
+    },
+    {
+      "description": "Sugar",
+      "quantity": 5,
+      "unit": "packets",
+      "donor": "Bambo ndi Mayi Chimpololo",
+      "sourceChecked": true,
+      "quantityNote": ""
+    },
+    {
+      "description": "Corn flakes",
+      "quantity": 1,
+      "unit": "kg",
+      "donor": "Mayi Phekani",
+      "sourceChecked": true,
+      "quantityNote": ""
+    },
+    {
+      "description": "Bread and margarine",
+      "quantity": null,
+      "unit": "quantity to confirm",
+      "donor": "",
+      "sourceChecked": false,
+      "quantityNote": ""
+    },
+    {
+      "description": "Tea leaves and peanut butter",
+      "quantity": null,
+      "unit": "quantity to confirm",
+      "donor": "",
+      "sourceChecked": false,
+      "quantityNote": ""
+    },
+    {
+      "description": "Surrounding cleaning",
+      "quantity": null,
+      "unit": "service",
+      "donor": "",
+      "sourceChecked": false,
+      "quantityNote": ""
+    },
+    {
+      "description": "Masache apanja",
+      "quantity": 4,
+      "unit": "brooms",
+      "donor": "Mayi Esther Sumani",
+      "sourceChecked": true,
+      "quantityNote": ""
+    },
+    {
+      "description": "Waisters (source wording)",
+      "quantity": 1,
+      "unit": "roll",
+      "donor": "",
+      "sourceChecked": false,
+      "quantityNote": ""
+    },
+    {
+      "description": "Mops",
+      "quantity": 3,
+      "unit": "mops",
+      "donor": "",
+      "sourceChecked": false,
+      "quantityNote": ""
+    }
+  ],
+  "cash": [
+    {
+      "name": "Bambo ndi Mayi Njobvuyalema",
+      "amount": 40000
+    },
+    {
+      "name": "Bambo ndi Mayi Malata",
+      "amount": 30000
+    },
+    {
+      "name": "Bambo ndi Mayi Nsabwe",
+      "amount": 30000
+    }
+  ]
+}
