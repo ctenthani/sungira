@@ -192,3 +192,20 @@ PostgreSQL-engine + DOM integration checks cover publication of unassigned share
 ## Version 9 validation
 
 Chromium checks: 320/360/390/430 layouts, compact board, mobile actions, six-page sample poster, public and officer poster creation, no empty savings report and no browser errors. The rendered mobile page and poster were visually inspected. A QR decoder verified that the poster includes the complete collection URL and token. Android compiled to DEX, resources linked successfully, application manifest verified and APK signatures verified. No native runtime or physical-device check was performed.
+
+## Version 10 — committee financial reports
+
+Redeploy this package to Netlify. No new SQL migration or Supabase key changes are required. Use the updated Android preview APK for Excel exports in the app.
+
+The Reports tab now produces a workbook-style income and expenditure account inspired by the supplied St. Ignatius reference:
+- Select one to three calendar years. Income and cash payments are grouped by activity and category, with Q1–Q4, annual and period totals.
+- Default scope is the selected activity. Group scope combines only activities visible to the signed-in officer whose trimmed group name matches. It never reads activities through public links. Keep unrelated groups distinctly named.
+- Quarterly cash roll-forward shows opening, receipts, payments, net movement and closing. Opening is calculated from earlier confirmed transactions in the selected scope. It does not invent a historic bank balance or transfer cash between activity ledgers.
+- Member schedules show actual confirmed contributions by payment date, January–December. These show when money was received, not the months a prepayment covers. Existing savings equivalents remain in the detailed activity report.
+- Transaction details include date, activity, member/payee, category, notes (enter item quantities here), reference, method and verification. Loan and investment principal flows stay labelled separately from contributions and operating expenses.
+- In-kind schedules show current required quantities, donor, received quantities, remaining requirements and status. They are labelled current status, not historical period movements, and never enter cash totals.
+- Excel exports are genuine `.xlsx` OOXML files with typed numeric cells, frozen headings, monthly sum formulas and quarterly/annual subtotals. Print/save PDF and standalone HTML use the selected report. The detailed activity report retains pledges, expenditure, savings positions and sign-off lines.
+- Reports are officer working documents and contain member names and transaction references. Public name visibility and anonymity rules continue to apply to the public collection pages and posters.
+- The supplied St. Ignatius financial records are used as a layout reference only; no source transactions or members have been imported into another group's ledger.
+
+Validation: browser tests checked prior-year opening balances, quarter boundaries, pending exclusion, cash reconciliation, mobile widths and existing public/officer posters. Generated Excel was parsed independently for sheet structure, numeric totals and formulas. The rebuilt preview APK passed signature verification; a physical Android installation and Excel application rendering have not been tested.
