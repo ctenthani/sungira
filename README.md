@@ -1,14 +1,40 @@
-# Sungira — shared group collections (version 3)
+# Sungira — shared group collections (version 4)
 
 This package upgrades the original browser ledger to a shared application backed by Supabase and Netlify Functions. It contains account registration, email confirmation, sign-in, password recovery, shared group access, public progress pages, treasurer payment review, optional verified PayChangu checkout, contribution/expense ledgers and expenditure reports.
 
 The package is implemented and locally tested, but is NOT connected to a live Supabase project, email service or PayChangu account, and has NOT been deployed. Do not announce live registration or payment collection until setup and live checks below are complete.
 
+## Update your existing live Sungira site
+
+Your existing accounts and collection records are retained. In Supabase SQL Editor run `database/payments.sql`, then `database/upgrade-v4.sql`, in that order. Then replace your existing Netlify repository files with this package and redeploy. Keep your existing environment keys. Do not rerun `setup.sql` after this upgrade: it installs the older RPC function.
+
+Open each collection and use **Settings & public view** to enable member viewing, then **Member viewing link** to copy or share its new unique link. Old UUID-only links must be replaced. Members open the link without registering. The owner can replace a viewing link, invalidating the previous one. Anyone holding an enabled link can view the public summary; public names require consent. Borrower details, contacts, payment evidence and private plan titles stay in officer views.
+
+## Version 4 workflows
+
+Officers register and sign in. Ordinary contributors do not need accounts: they receive the viewing link, pay through the group's published instructions, and contact the officer with their payment reference. Officers record and verify contributions. Public totals refresh about every 10 seconds while the page is open, with a manual refresh button.
+
+**Investment savings:** record actual cash invested, review dates, cash received and original capital cost released. Reports distinguish available cash, investment capital at cost, realised gain/loss and total recorded assets. These records do not execute investments or automatically divide profits among members.
+
+**Member lending:** select a contributor, record principal, agreed interest rate, term and first instalment date. Choose a flat percentage for the whole term or simple monthly interest on original principal. The app creates a monthly schedule, tracks overdue amounts, separates principal and interest repayments, and records approved write-offs/waivers. Expected interest is not counted as cash or an asset. There is no compounding, automatic penalty or automatic early-settlement discount. Borrower identities and agreements remain private to authorised officers.
+
+Five further uses are implemented through **Plans & delivery**:
+
+| Collection type | Workflow |
+| --- | --- |
+| Emergency welfare fund | Private assistance case, approved budget, due date, linked payment and completion |
+| School-fee support | Private learner/school/term note, planned fees, deadline, linked expense and completion |
+| Community project | Milestone budget, due date, actual spending and delivery status |
+| Bulk purchasing | Quantity × unit cost, optional order owner, supplier expense and delivery status |
+| Event / trip fund | Places or bookings × unit cost, deadlines, actual spending and completion |
+
+Each plan can have an optional member-facing label; its private title stays hidden. Linked expenditure cannot exceed the remaining planned budget or available cash. Completion is marked by an officer. Officer reports and CSV downloads include savings allocations and plans. Corrections retain an audit history.
+
 ## One-time setup for the organiser / technical helper
 
 Ordinary users do not perform any of these setup steps.
 
-1. Create a Supabase project. Open its SQL Editor and run `database/setup.sql`, then `database/payments.sql`. Use a fresh project or check the table names before running them. Both scripts can be rerun without deleting collection records.
+1. Create a Supabase project. Open its SQL Editor and run `database/setup.sql`, then `database/payments.sql`, then `database/upgrade-v4.sql`. Use a fresh project or check the table names before running them. Both scripts can be rerun without deleting collection records.
 2. In Supabase Authentication, enable email/password sign-up and KEEP email confirmation enabled. Configure custom SMTP for confirmation and password-reset emails to ordinary users. Supabase's default email sender is restricted to project team addresses; it is not suitable for public registration. See https://supabase.com/docs/guides/auth/auth-smtp .
 3. Extract the ZIP. Deploy the project through a connected Git repository in Netlify, or through the Netlify CLI. **Dragging the folder into Netlify Drop is insufficient for this version because server Functions must be deployed.** Netlify reads `netlify.toml`; build command is `node build.cjs`, publish directory is `public`, function directory is `netlify/functions`. There are no runtime npm dependencies.
 4. In the Netlify site's environment settings, add these values for the Functions scope:
@@ -24,8 +50,8 @@ Never put a service-role key or merchant secret into HTML/JavaScript, Git or a p
 
 5. In Supabase Authentication URL Configuration, set Site URL to the final Netlify HTTPS URL, and add that exact URL with a trailing slash to the allowed redirect URLs. Confirmation and reset links return there. Use standard confirmation templates with `ConfirmationURL` so the direct REST authentication flow can complete.
 6. Redeploy after changing environment settings. Open the site. Create the designated organiser account and confirm its email. Sign in. Click **Create with the church list** once to create **Charles Luanga Paper Sunday**. Set the actual collection deadline; none was supplied by the photograph. The prepared list button is reserved for `SEED_OWNER_EMAIL` to prevent unrelated users retrieving church names.
-7. Create a second account from a different email. From the owner account, open **Group access**, add that email as Member or Treasurer, then sign in with the second account to verify sharing. Account-access grants do not automatically send invitation emails; send the site link yourself.
-8. Open **Settings & public view** and publish the collection if desired. Copy its public link via **Share public link**. Public visitors do not need accounts. Publishing names requires each contributor's consent flag under **People → Edit**; names are private by default.
+7. Create a second account from a different email. From the owner account, open **Group access**, add that email as Treasurer or read-only Viewer, then sign in with the second account to verify sharing. Account-access grants do not automatically send invitation emails; send the site link yourself.
+8. Open **Settings & public view** and publish the collection if desired. Copy its public link via **Member viewing link**. Public visitors do not need accounts. Publishing names requires each contributor's consent flag under **People → Edit**; names are private by default.
 
 ## Charles Luanga Paper Sunday list
 
@@ -33,26 +59,16 @@ The attachment is headed “2026 MLOZO WA KOLONA ST CHARLES LWANGWA OCTOBER” a
 
 There are 30 dated rows (2–31 October), with “Bambo ndi Mayi Kanike” repeated on 7 and 21 October. The prepared collection therefore has **29 distinct contributor entries**, with zero recorded pledges and no payments. R Kanagwa and D Kanagwa remain separate. `Charles-Luanga-Paper-Sunday-names.csv` contains the names for review. Confirm the spellings and the duplicate before real use. The supplied title “Charles Luanga Paper Sunday” is retained; the programme's church spelling differs.
 
-## How group members use Sungira
-
-1. **Create account** with name, email and password; confirm the email link.
-2. Sign in. The collections for which the organiser granted your email access appear automatically.
-3. Pay using the group's instructions. Choose **I have paid / record payment**, select the contributor, enter amount/date/method/reference and optional proof picture (PNG/JPEG/WebP, up to 200 KB).
-4. Submitted payments remain **Pending**. The treasurer checks the bank/mobile-money statement or cash receipt, and confirms or rejects them with a review note.
-5. **Confirmed** payments count toward collected funds. Pending, rejected and voided entries do not. Payment references cannot be reused for the same method while an entry remains active.
-6. Group members and public visitors see updates automatically within about 10 seconds while their page is open. **Refresh now** is also available. This uses polling, not a WebSocket connection; offline submissions are not supported.
-
-## Roles
+## Accounts and access
 
 | Role | Allowed work |
 | --- | --- |
-| Owner | All treasurer functions, collection settings, publishing, account access |
-| Treasurer | Add/edit contributors, report/review payments, record expenses, void confirmed entries, close/reopen collection, manage rotation |
-| Member | View authorised group records and report payments for review |
-| Viewer | View authorised group records and reports |
-| Public visitor | View published totals, consented names/confirmed totals, expenditure dates/categories/amounts |
+| Owner | Treasurer work, settings, account access and viewing-link replacement |
+| Treasurer | Contributors, payment review, expenses, loans, investments, plans and reports |
+| Viewer | Read-only access to private officer records and reports |
+| Link holder | Public collection totals, consented contributor names, expenditure summary and explicitly published plan labels |
 
-Group access is associated with a confirmed account email. Contributor names are ledger entries, not automatically created user accounts. A member may submit a family contribution on behalf of a listed person; the reporter's account is recorded for review. Authorised group users can see private group records, including contributor contact details, proof pictures and activity emails. Public visitors cannot.
+Only grant accounts to responsible officers or reviewers. Existing Member accounts become read-only; new Member grants are disabled. Account-access grants do not send invitations automatically. Public link holders cannot write to the ledger. Contribution names are ledger records, not user accounts.
 
 ## Optional PayChangu provider verification
 
@@ -83,7 +99,7 @@ Documentation used:
 
 ## Spending, reporting and corrections
 
-Expenses require recipient, purpose, amount, date and category. They cannot exceed the confirmed ledger balance; the database serialises changes per collection to prevent simultaneous overspending. Banki mkhonde has a rotation schedule and separate payout entries. Moving a turn never moves money. Loan interest and annual share-out calculations are not included; use a separate collection for each period/round.
+Expenses require recipient, purpose, amount, date and category. They cannot exceed the confirmed ledger balance; the database serialises changes per collection to prevent simultaneous overspending. Banki mkhonde has a rotation schedule and separate payout entries. Moving a turn never moves money. Fixed-term loan interest and repayment schedules are included. Automatic annual share-out allocation is not included; use a separate collection for each period/round.
 
 At the deadline, Reports automatically becomes an end-of-period report. It shows confirmed contributions by person, expenditure detail/category totals, outstanding pledges, pending amounts excluded from cash totals and closing balance. Late entries assigned to the collection are included and disclosed. Print/save PDF or download HTML/CSV. Public pages offer a privacy-limited expenditure summary and printable view.
 
@@ -102,3 +118,7 @@ Close the collection after reconciling. Closing locks contributor/financial entr
 - Static build excludes SQL, source function files and the private seed CSV from the public assets.
 
 Live Supabase Auth/SMTP, live PayChangu checkout/webhook delivery, Netlify deployment and browser visual/mobile testing are not yet verified. Chromium installation was attempted but the browser download was unavailable. Run the live checks before inviting users or collecting money. Ensure database backups are enabled in your selected Supabase plan, and periodically export group reports.
+
+## Version 4 validation
+
+PostgreSQL-engine checks cover viewing-link tokens and replacement, officer-only writes, cash/capital separation, loan schedules and allocations, retry idempotency, investment profits/losses, write-offs, correction reversals, all five plan workflows and a non-destructive repeat migration. DOM integration checks cover officer sign-in, the church list, contribution review, reporting and accountless token-based public viewing. Authentication and payment-provider requests are mocked in local tests; live email, payment settlement and real-device layout need checks after deployment.

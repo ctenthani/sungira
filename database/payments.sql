@@ -13,7 +13,7 @@ begin
  select * into c from public.sungira_collections where id=collection_id for update;
  if c.id is null then raise exception 'Collection not found.';end if;
  if c.owner_id=actor_id then role_name='Owner';else select a.role into role_name from public.sungira_access a where a.collection_id=c.id and a.email=lower(actor_email);end if;
- if role_name is null or role_name='Viewer' then raise exception using errcode='42501',message='You cannot make payments for this group.';end if;
+ if role_name is null or role_name not in ('Owner','Treasurer') then raise exception using errcode='42501',message='You cannot make payments for this group.';end if;
  if c.data->>'status'='Closed' then raise exception 'This collection is closed.';end if;
  if amount is null or amount<=0 or amount>100000000000 or amount<>round(amount,2) then raise exception 'Check the payment amount.';end if;
  if not exists(select 1 from jsonb_array_elements(c.data->'members') m where m->>'id'=member_id) then raise exception 'Choose a contributor.';end if;
