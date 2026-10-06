@@ -1,4 +1,4 @@
-# Sungira — shared group collections (version 4)
+# Sungira — shared group collections (version 5)
 
 This package upgrades the original browser ledger to a shared application backed by Supabase and Netlify Functions. It contains account registration, email confirmation, sign-in, password recovery, shared group access, public progress pages, treasurer payment review, optional verified PayChangu checkout, contribution/expense ledgers and expenditure reports.
 
@@ -6,9 +6,19 @@ The package is implemented and locally tested, but is NOT connected to a live Su
 
 ## Update your existing live Sungira site
 
-Your existing accounts and collection records are retained. In Supabase SQL Editor run `database/payments.sql`, then `database/upgrade-v4.sql`, in that order. Then replace your existing Netlify repository files with this package and redeploy. Keep your existing environment keys. Do not rerun `setup.sql` after this upgrade: it installs the older RPC function.
+If version 4 is already installed, run only `database/upgrade-v5.sql` in Supabase SQL Editor, then deploy the updated files through your existing Netlify repository. Keep your current environment keys. If you are still using version 3, run `database/payments.sql`, then `database/upgrade-v4.sql`, then `database/upgrade-v5.sql`. For a fresh installation run `setup.sql`, `payments.sql`, `upgrade-v4.sql`, `upgrade-v5.sql`, in that order. All migrations preserve existing records. Do not run older scripts after a newer migration without applying the subsequent migrations again.
 
-Open each collection and use **Settings & public view** to enable member viewing, then **Member viewing link** to copy or share its new unique link. Old UUID-only links must be replaced. Members open the link without registering. The owner can replace a viewing link, invalidating the previous one. Anyone holding an enabled link can view the public summary; public names require consent. Borrower details, contacts, payment evidence and private plan titles stay in officer views.
+Version 4 member viewing links continue working. Ordinary members need no accounts. Open Settings to name your group and activity and set the agreed monthly contribution. Existing collections use their current name until edited. Create separate activities under the same group name, each with its own ledger, target and member viewing link. This does not pool balances or automatically transfer money between activities.
+
+## Version 5: pledges, acknowledgements and receipts
+
+- **Group + activity:** e.g. Charles Luanga Mpakati / Kudyetsa Ansembe, Paper Sunday or Patron Saint Day; Kapozi Investments / Monthly Contributions, Lake Trip or Zambia Trip. Search finds both names. Headers and receipts carry both.
+- **In-kind pledges:** People → Add goods / service pledge. Choose contributor, item/service, quantity, unit and optional due date. Acknowledge actual deliveries, including partial deliveries. Corrections reverse a delivery with a reason, preserving history. Quantities never increase cash totals; different units are not added together. Items appear publicly only if explicitly published and the contributor name is visible. Reports include the separate goods/services schedule.
+- **All-name visibility:** People → Show all names / Hide all names. Owner and Treasurer may apply this to every contributor at once. Showing requires confirmation that contributors agreed. It changes contributor visibility, not whether the viewing link is enabled; Settings controls that separately. Read-only accounts cannot change it.
+- **Payment acknowledgement:** record a contribution, then Payments → Acknowledge payment. Check the actual cash/statement, choose Confirmed and record how it was checked. A receipt is generated and opens immediately. Rejected and pending payments never receive a paid receipt. Existing confirmed/provider-verified contributions can obtain a receipt through their Receipt button.
+- **Receipts:** group name, activity, contributor, received amount, payment date/method/reference, full unique receipt number, treasurer acknowledgement and monthly progress at issue. Send via WhatsApp opens a prefilled message; the officer chooses the recipient and sends it. Download HTML or Print / save PDF for a document attachment. Receipts remain private to authorised accounts and are not accessible via an anonymous receipt URL. A voided contribution invalidates its receipt; entry history is retained. Later edits to group names/rates do not rewrite issued receipts.
+- **Monthly savings:** set the agreed monthly amount per member in Settings. Confirmed contribution totals divided by this amount show complete months plus the remaining amount towards the next month. For example MK 25,000 at MK 10,000/month covers 2 months plus MK 5,000. Cumulative coverage starts in the collection's start month; contribution rows show the equivalent months for that payment. This is automatic oldest-month coverage, not individually selected calendar-month allocation. One rate applies to the whole activity; create another activity for a different rate/period. Only acknowledged cash contributions count, excluding loans, interest, investment returns and in-kind items.
+- **Status colours:** green Paid/Acknowledged or Received; amber Pledged/Unpaid; partial payments explicitly show that a pledge remains. Status text accompanies the colours.
 
 ## Version 4 workflows
 
@@ -34,7 +44,7 @@ Each plan can have an optional member-facing label; its private title stays hidd
 
 Ordinary users do not perform any of these setup steps.
 
-1. Create a Supabase project. Open its SQL Editor and run `database/setup.sql`, then `database/payments.sql`, then `database/upgrade-v4.sql`. Use a fresh project or check the table names before running them. Both scripts can be rerun without deleting collection records.
+1. Create a Supabase project. Open its SQL Editor and run `database/setup.sql`, then `database/payments.sql`, then `database/upgrade-v4.sql`, then `database/upgrade-v5.sql`. Use a fresh project or check the table names before running them. Both scripts can be rerun without deleting collection records.
 2. In Supabase Authentication, enable email/password sign-up and KEEP email confirmation enabled. Configure custom SMTP for confirmation and password-reset emails to ordinary users. Supabase's default email sender is restricted to project team addresses; it is not suitable for public registration. See https://supabase.com/docs/guides/auth/auth-smtp .
 3. Extract the ZIP. Deploy the project through a connected Git repository in Netlify, or through the Netlify CLI. **Dragging the folder into Netlify Drop is insufficient for this version because server Functions must be deployed.** Netlify reads `netlify.toml`; build command is `node build.cjs`, publish directory is `public`, function directory is `netlify/functions`. There are no runtime npm dependencies.
 4. In the Netlify site's environment settings, add these values for the Functions scope:
@@ -122,3 +132,7 @@ Live Supabase Auth/SMTP, live PayChangu checkout/webhook delivery, Netlify deplo
 ## Version 4 validation
 
 PostgreSQL-engine checks cover viewing-link tokens and replacement, officer-only writes, cash/capital separation, loan schedules and allocations, retry idempotency, investment profits/losses, write-offs, correction reversals, all five plan workflows and a non-destructive repeat migration. DOM integration checks cover officer sign-in, the church list, contribution review, reporting and accountless token-based public viewing. Authentication and payment-provider requests are mocked in local tests; live email, payment settlement and real-device layout need checks after deployment.
+
+## Version 5 validation
+
+PostgreSQL-engine tests verify immutable receipt snapshots and repeat issuance, monthly full/partial amounts, partial in-kind delivery, retry deduplication, over-delivery rejection, corrections, public consent filtering, bulk visibility and repeat migration. DOM integration tests cover group/activity settings, monthly receipt generation on acknowledgement, WhatsApp action, partial delivery, bulk show/hide and accountless public viewing. Provider HTTP requests and authentication are mocked; no live deployment or WhatsApp sending was performed.
