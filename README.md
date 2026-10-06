@@ -1,4 +1,4 @@
-# Sungira — shared group collections (version 6)
+# Sungira — shared group collections (version 8)
 
 This package upgrades the original browser ledger to a shared application backed by Supabase and Netlify Functions. It contains account registration, email confirmation, sign-in, password recovery, shared group access, public progress pages, treasurer payment review, optional verified PayChangu checkout, contribution/expense ledgers and expenditure reports.
 
@@ -6,9 +6,26 @@ The package is implemented and locally tested, but is NOT connected to a live Su
 
 ## Update your existing live Sungira site
 
-If version 5 is installed, run only `database/upgrade-v6.sql` in Supabase SQL Editor and deploy the updated files through your existing Netlify repository. Keep all existing environment keys. Earlier installations must run missing migrations in order: `payments.sql`, `upgrade-v4.sql`, `upgrade-v5.sql`, `upgrade-v6.sql`. A fresh installation starts with `setup.sql` before that sequence. Do not run older scripts over the new wrapper without subsequently applying every newer migration.
+If version 7 is installed, run `database/upgrade-v8.sql` in Supabase SQL Editor and deploy this package through your existing Netlify repository. Existing accounts, records and viewing links are kept. Earlier installations must apply missing migrations in ascending order through version 8. Fresh installations run `setup.sql`, `payments.sql`, then `upgrade-v4.sql` through `upgrade-v8.sql`.
 
-Open the existing Charles Lwangwa activity → People → **Merge church lists & pledged items**. This imports into that activity once, retaining existing contributor IDs, payments and settings. The designated `SEED_OWNER_EMAIL` account can access this button. New prepared church collections include the merge automatically. Each activity remains separate; importing does not copy funds between activities. Ordinary members continue using existing accountless viewing links.
+## Version 8: names by default, individual anonymity
+
+This version supersedes the earlier opt-in name policy described in historical notes below. Existing contributors without an explicit anonymous setting are now named by default, as requested. New contributors, prepared-list imports and notepad additions also default to named visibility. The member viewing link still has to be enabled; default name visibility does not turn on a disabled collection link.
+
+**People → Share all names & pledges** shares cash contributor names and publishes all in-kind checklist items together. In-kind donor names follow the same contributor setting. **Hide all names** hides the cash and in-kind names while leaving item quantities visible. It does not erase anonymity preferences.
+
+For someone who wants anonymity, choose **People → Edit → Keep this contributor anonymous**. Their name stays out of the public cash list, public in-kind checklist and general WhatsApp group update. Officers continue to see their identity in private records. Bulk sharing never overrides this setting. To name them again, edit that contributor and clear Anonymous. Receipts remain private officer records issued to the contributor; anonymity does not rewrite private receipts.
+
+Validation: PostgreSQL-engine checks cover existing names visible by default, new-donor defaults, combined cash/in-kind sharing, anonymous names remaining hidden after share/hide, repeat migrations and explicitly returning a contributor to named visibility.
+
+## Version 7: compact live progress
+
+- Savings sections appear only for savings/lending groups or activities with actual savings records. Paper Sunday no longer shows an empty investment/loan section. Project plans remain in reports.
+- The public checklist includes shared requirements even when no donor has pledged them. Donor-name visibility is separate from item visibility. Payment references, delivery notes, audit emails and contacts are not returned through this item feed.
+- Eight compact item rows per page; Previous/Next, text search, category filters and status filters. Counters show received, pledged/partial and still-needing-a-pledge item lines, not sums across incompatible units. Private details expand on demand. Search/filter/page selection persists when live data refreshes.
+- Public contributor search and Paid/Outstanding pledge filters with a bounded table. Reports show the complete checklist in a compact scroll area; printing expands the full list.
+- **Share group update** and the public **Share latest update on WhatsApp** produce received cash, consented contributor totals, unpaid pledges, checklist counts and a short still-needed list, followed by the live member link. This is a current snapshot; the linked page refreshes about every ten seconds. Recipients and message sending remain under the user's control.
+- The screenshots are layout references, not new instructions to import historical September payments or publish account details. Existing entries are preserved.
 
 ## Version 6 changes
 
@@ -53,7 +70,7 @@ Each plan can have an optional member-facing label; its private title stays hidd
 
 Ordinary users do not perform any of these setup steps.
 
-1. Create a Supabase project. Open its SQL Editor and run `database/setup.sql`, then `database/payments.sql`, then `database/upgrade-v4.sql`, then `database/upgrade-v5.sql`, then `database/upgrade-v6.sql`. Use a fresh project or check the table names before running them. Both scripts can be rerun without deleting collection records.
+1. Create a Supabase project. Open its SQL Editor and run `database/setup.sql`, then `database/payments.sql`, then `database/upgrade-v4.sql`, then `database/upgrade-v5.sql`, then `database/upgrade-v6.sql`, then `database/upgrade-v7.sql`. Use a fresh project or check the table names before running them. Both scripts can be rerun without deleting collection records.
 2. In Supabase Authentication, enable email/password sign-up and KEEP email confirmation enabled. Configure custom SMTP for confirmation and password-reset emails to ordinary users. Supabase's default email sender is restricted to project team addresses; it is not suitable for public registration. See https://supabase.com/docs/guides/auth/auth-smtp .
 3. Extract the ZIP. Deploy the project through a connected Git repository in Netlify, or through the Netlify CLI. **Dragging the folder into Netlify Drop is insufficient for this version because server Functions must be deployed.** Netlify reads `netlify.toml`; build command is `node build.cjs`, publish directory is `public`, function directory is `netlify/functions`. There are no runtime npm dependencies.
 4. In the Netlify site's environment settings, add these values for the Functions scope:
@@ -149,3 +166,7 @@ PostgreSQL-engine tests verify immutable receipt snapshots and repeat issuance, 
 ## Version 6 validation
 
 PostgreSQL-engine tests verify the 53 prepared contributors, 34 requirements, MK100,000 unpaid cash pledges, repeat-import safety, automatic acknowledged contributions and receipts, retry deduplication, bulk-name ID preservation, stale-edit rejection, unknown quantities and partial delivery. DOM integration checks the notepad editor, displayed requirement states, direct payment and receipt opening, letter receipt structure and WhatsApp sharing URL. Function tests verify that only the designated church officer can import the server-owned dataset. Authentication is mocked; live deployment and device rendering are not tested.
+
+## Version 7 validation
+
+PostgreSQL-engine + DOM integration checks cover publication of unassigned shared items, donor consent/privacy, acknowledged delivery appearing in the public feed, checklist hiding/sharing, repeat migration, eight-row pagination/search, WhatsApp summary privacy, a Paper Sunday report without savings and a savings-group report with its savings section. Auth is mocked; no live deployment or real-device visual test is claimed.
