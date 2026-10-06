@@ -1,4 +1,4 @@
-# Sungira — shared group collections (version 8)
+# Sungira — shared group collections (version 9)
 
 This package upgrades the original browser ledger to a shared application backed by Supabase and Netlify Functions. It contains account registration, email confirmation, sign-in, password recovery, shared group access, public progress pages, treasurer payment review, optional verified PayChangu checkout, contribution/expense ledgers and expenditure reports.
 
@@ -6,7 +6,25 @@ The package is implemented and locally tested, but is NOT connected to a live Su
 
 ## Update your existing live Sungira site
 
-If version 7 is installed, run `database/upgrade-v8.sql` in Supabase SQL Editor and deploy this package through your existing Netlify repository. Existing accounts, records and viewing links are kept. Earlier installations must apply missing migrations in ascending order through version 8. Fresh installations run `setup.sql`, `payments.sql`, then `upgrade-v4.sql` through `upgrade-v8.sql`.
+Version 9 is a frontend/mobile update. If version 8 is already installed, no new SQL migration is needed. Deploy the files from this package through your existing Netlify repository. The build copies `mobile.js`, the local QR library and `downloads/sungira-preview.apk` into the public site alongside the existing assets. Earlier databases still need the missing scripts in order through `upgrade-v8.sql`. Existing accounts, entries and viewing links are retained.
+
+## Version 9: mobile interface and outstanding-items posters
+
+- Refreshed mobile layout with larger touch controls, responsive cards, compact totals, scrolling officer tabs and a fixed Home / Refresh / Share / Help bar. Checked in Chromium at widths 320, 360, 390 and 430 pixels with no horizontal page overflow. Desktop layouts remain responsive.
+- **Share items poster**, or mobile **Share → Outstanding-items poster**, fetches the current public checklist before rendering. Only published public items appear; anonymous donor names remain hidden. No officer contacts, delivery notes, payment evidence or account credentials are included.
+- The 1080 × 1440 PNG cards list six outstanding items each. Larger lists automatically create multiple numbered cards. Required quantities, outstanding quantities and named/anonymous pledge status are displayed. Unknown quantities remain labelled To confirm. QR codes are generated locally; no external QR service receives the member token.
+- **Share image & link** uses the phone share sheet when file sharing is supported. The message carries the clickable link and the image carries a QR code. Choose WhatsApp yourself. If image sharing is unsupported, download the PNG, attach it in WhatsApp and paste the copied link. PNG pixels cannot contain a tappable hyperlink; QR and accompanying text provide access. The poster is a dated snapshot and its linked page is live.
+- **Save PNG** saves the current card. Previous/Next chooses another card. Receipt downloads, contribution review and individual anonymity settings continue to work.
+
+## Android preview APK
+
+`sungira-preview.apk` is also available through the site footer after deployment. It supports Android 8.0 (API 26) or later and opens `https://sungira.netlify.app/`. It shares the same server records and needs internet access. Use **Open group link** to paste a member viewing URL. Officers sign in normally inside the app. Browser and app authentication sessions are separate.
+
+Download the APK on an Android phone, open it and permit installation from the app used to download it when Android prompts. This preview is not a Play Store release. It uses a preview signing certificate; keep the included preview keystore for compatible preview updates. A production distribution needs a private production signing key and on-device testing. No Supabase secret is embedded in the APK.
+
+The native wrapper supports Android image sharing/saving, user-selected payment-proof images, receipt printing, refresh, back navigation and trusted group links. External WhatsApp/payment links open their appropriate apps/browser. Only Sungira HTTPS pages can invoke the export bridge. Local file navigation and cleartext HTTP are disabled. Export files are exposed through a read-only content provider with temporary read permission.
+
+Android source and a command-line build script are under `android/`. Set `SDK_DIR` and optionally `BUILD_TOOLS_DIR` to Android platform 35/build tools 35; use JDK javac or the ECJ compiler fallback. Only the INTERNET permission is requested. The preview APK's manifest, package structure and v2/v3 signatures were verified. It has not been installed on a physical phone or Android emulator; verify sign-in, external payments, file selection, printing and sharing on a real device before wider distribution. The new web interface appears in the app once this site update is deployed.
 
 ## Version 8: names by default, individual anonymity
 
@@ -170,3 +188,7 @@ PostgreSQL-engine tests verify the 53 prepared contributors, 34 requirements, MK
 ## Version 7 validation
 
 PostgreSQL-engine + DOM integration checks cover publication of unassigned shared items, donor consent/privacy, acknowledged delivery appearing in the public feed, checklist hiding/sharing, repeat migration, eight-row pagination/search, WhatsApp summary privacy, a Paper Sunday report without savings and a savings-group report with its savings section. Auth is mocked; no live deployment or real-device visual test is claimed.
+
+## Version 9 validation
+
+Chromium checks: 320/360/390/430 layouts, compact board, mobile actions, six-page sample poster, public and officer poster creation, no empty savings report and no browser errors. The rendered mobile page and poster were visually inspected. A QR decoder verified that the poster includes the complete collection URL and token. Android compiled to DEX, resources linked successfully, application manifest verified and APK signatures verified. No native runtime or physical-device check was performed.
