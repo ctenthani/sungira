@@ -257,3 +257,9 @@ Record income now offers Individual/family contribution or Group income/offering
 Prepared church-list import appears only for Church activities named Charles Lwanga/Luanga/Lwangwa, for the designated organiser. The database also rejects imports into unrelated groups. Savings and project actions remain driven by the chosen collection type.
 
 Verified grouped navigation, context-sensitive church actions, group-income cash and consolidated totals, full database-chain income insertion and idempotent resubmission. This update does not copy or delete existing financial records.
+
+## Version 15.1 — group income stays out of member schedules
+
+The monthly member report now includes only members with confirmed individual Contribution entries in the selected year and reporting dates. An activity such as Chopeleka with group receipts no longer creates a zero-valued row for every copied member. Members are still available for selection when recording an individual payment. Group receipts have a separate Group income schedule with activity, income type, source, amount and reference, and remain included in cash and income totals. Group income never counts toward a person's pledge or monthly coverage. The detailed activity report also omits un-attributable member rows.
+
+Screen, HTML/print and Excel reports use the same revised schedules. No SQL or APK update is required. Model checks covered group-only income and mixed individual/group receipts, verifying that individual totals exclude all group receipts while cash totals retain both.
