@@ -247,3 +247,13 @@ Run `database/upgrade-v14.sql` in Supabase after the v8 migration and the pgcryp
 Use Load group names under People & pledges to add missing names to an existing open activity. It preserves existing member IDs, pledges and payment references and does not add an already-present full name again. Later name additions in another activity can be brought across with this button. This is not a live global member registry; editing a name in one activity does not rewrite another activity's historical receipts.
 
 Tested automatic copying, zero pledges, fresh IDs, empty new ledger, anonymity preservation, repeat loading without duplicates, officer permission enforcement and rerunnable migration with the complete database RPC chain.
+
+## Version 15 — collections contain activities; group income types
+
+Run `database/upgrade-v15.sql` after v14, then redeploy. The landing page shows one collection card per group name. Open it to see Monthly Contributions/Lake Trip or Chopeleka/Paper Sunday/Zodyetsa Ansembe. Existing activity IDs and member links remain unchanged. Activities without a group name remain standalone. Use distinct group names for unrelated collections.
+
+Record income now offers Individual/family contribution or Group income/offering. Group income has an income category (including Sunday Offering for Church activities), source, date, amount, payment method and reference. It is confirmed immediately by an officer, contributes to available cash and the combined account, and does not reduce a member pledge or count as their monthly payment. Entries retain a type/source and are shown under Payments with Details. Individual contribution receipts continue to work.
+
+Prepared church-list import appears only for Church activities named Charles Lwanga/Luanga/Lwangwa, for the designated organiser. The database also rejects imports into unrelated groups. Savings and project actions remain driven by the chosen collection type.
+
+Verified grouped navigation, context-sensitive church actions, group-income cash and consolidated totals, full database-chain income insertion and idempotent resubmission. This update does not copy or delete existing financial records.
