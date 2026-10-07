@@ -4,7 +4,7 @@ do $$ begin
 end $$;
 update public.sungira_collections set data=data||jsonb_build_object('publicItems',true,'inKind',coalesce((select jsonb_agg(k||jsonb_build_object('publish',true)) from jsonb_array_elements(coalesce(data->'inKind','[]'::jsonb)) k),'[]'::jsonb)) where coalesce((data->>'churchV6Imported')::boolean,false) and not(data?'publicItems');
 create or replace function public.sungira_action(actor_id uuid,actor_email text,action_name text,payload jsonb)
-returns jsonb language plpgsql security definer set search_path=public,pg_temp as $$
+returns jsonb language plpgsql security definer set search_path=public,extensions,pg_temp as $$
 declare r jsonb;d jsonb;c public.sungira_collections%rowtype;role_name text;
 begin
  if action_name='public' then

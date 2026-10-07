@@ -231,3 +231,11 @@ Group account & reports opens the combined report for the current activity's sta
 Start another activity now uses a short form: activity name, inherited reporting start/end dates, optional target and public-link switch. Group identity and collection use are inherited. Payments and membership remain activity-specific. Officers must have access to every activity they expect in the combined report; the interface does not bypass account permissions.
 
 No new SQL or APK is needed. Model tests verified combined receipts/spending, period boundaries, opening cash, pending and unrelated-group exclusion, and the new-activity payload. The unavailable screenshot could not be checked, so no specific screenshot error has been independently diagnosed.
+
+## Fix: gen_random_bytes(integer) does not exist
+
+If creating an activity shows this error, run `database/fix-pgcrypto.sql` in the Supabase SQL Editor as the project administrator. This is a database fix and takes effect immediately; a Netlify redeploy alone cannot resolve it. The script enables pgcrypto if absent, verifies schema-qualified random token generation, and updates the search paths on all versioned Sungira RPC layers to include pgcrypto's installed schema. It is transactional and rerunnable, and preserves records and existing viewing links. Retry creating the activity after the script succeeds.
+
+The screenshot's creation error occurred at token generation inside the transaction, so that failed request did not commit a new activity. Fresh setup functions also include Supabase's standard extensions schema in their search paths. Existing installations need the fix script above.
+
+Validation of the crypto fix: reproduced the exact missing-function error with pgcrypto installed in the extensions schema and the complete versioned RPC chain. Confirmed the failed create rolled back, then applied the fix and created an activity successfully with a 48-character token. Rerunning the fix preserved that activity and its token. These were local PostgreSQL-compatible tests, not a write to the live Supabase project.

@@ -1,5 +1,6 @@
 -- Sungira v4: run AFTER existing setup.sql and payments.sql. Preserves records.
 -- Safe to rerun. Existing member links must be re-shared after token creation.
+SET search_path = public, extensions, pg_temp;
 do $$ begin
  if to_regprocedure('public.sungira_v3_action(uuid,text,text,jsonb)') is null then
   alter function public.sungira_action(uuid,text,text,jsonb) rename to sungira_v3_action;
@@ -14,7 +15,7 @@ end $$;
 update public.sungira_collections set data=data||jsonb_build_object('publicToken',encode(gen_random_bytes(24),'hex')) where not(data?'publicToken');
 
 create or replace function public.sungira_financial_summary(d jsonb) returns jsonb
-language plpgsql immutable set search_path=public,pg_temp as $$
+language plpgsql immutable set search_path=public,extensions,pg_temp as $$
 declare ledger_entry jsonb;cash numeric=0;collected numeric=0;expenses numeric=0;pending numeric=0;invested numeric=0;loans numeric=0;interest_expected numeric=0;interest_received numeric=0;gain numeric=0;writeoffs numeric=0;l jsonb;principal_paid numeric;interest_paid numeric;waived numeric;
 begin
  for ledger_entry in select value from jsonb_array_elements(coalesce(d->'ledger','[]'::jsonb)) loop
@@ -40,7 +41,7 @@ end $$;
 revoke all on function public.sungira_financial_summary(jsonb) from public,anon,authenticated;
 
 create or replace function public.sungira_action(actor_id uuid,actor_email text,action_name text,payload jsonb)
-returns jsonb language plpgsql security definer set search_path=public,pg_temp as $$
+returns jsonb language plpgsql security definer set search_path=public,extensions,pg_temp as $$
 declare c public.sungira_collections%rowtype;d jsonb;role_name text;result jsonb;rec jsonb;entity jsonb;item jsonb;
  amount numeric;pnum numeric;inum numeric;remaining numeric;outstanding_interest numeric;summary jsonb;
  entity_id text;entry_id text;note text;new_token text;rate numeric;months integer;agreed numeric;schedule jsonb;principal_part numeric;interest_part numeric;due_date date;is_finance boolean;

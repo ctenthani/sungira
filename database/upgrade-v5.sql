@@ -5,7 +5,7 @@ do $$ begin
  end if;
 end $$;
 create or replace function public.sungira_action(actor_id uuid,actor_email text,action_name text,payload jsonb)
-returns jsonb language plpgsql security definer set search_path=public,pg_temp as $$
+returns jsonb language plpgsql security definer set search_path=public,extensions,pg_temp as $$
 declare c public.sungira_collections%rowtype;d jsonb;r jsonb;item jsonb;old jsonb;rec jsonb;role_name text;eid text;n numeric;received numeric;monthly numeric;total numeric;logtext text;
 begin
  if action_name='public' then

@@ -5,7 +5,7 @@ end $$;
 update public.sungira_collections set data=jsonb_set(data,'{members}',coalesce((select jsonb_agg(m||jsonb_build_object('anonymous',coalesce((m->>'anonymous')::boolean,false),'publicConsent',not coalesce((m->>'anonymous')::boolean,false))) from jsonb_array_elements(data->'members') m),'[]'::jsonb)) where not coalesce((data->>'namesV8')::boolean,false);
 update public.sungira_collections set data=data||jsonb_build_object('namesV8',true) where not coalesce((data->>'namesV8')::boolean,false);
 create or replace function public.sungira_action(actor_id uuid,actor_email text,action_name text,payload jsonb)
-returns jsonb language plpgsql security definer set search_path=public,pg_temp as $$
+returns jsonb language plpgsql security definer set search_path=public,extensions,pg_temp as $$
 declare c public.sungira_collections%rowtype;d jsonb;r jsonb;role_name text;visible boolean;anon boolean;member_id text;old_ids jsonb;
 begin
  if action_name='visibility_all' then

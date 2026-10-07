@@ -15,7 +15,7 @@ alter table public.sungira_access enable row level security;
 revoke all on public.sungira_collections,public.sungira_access from anon,authenticated;
 
 create or replace function public.sungira_action(actor_id uuid,actor_email text,action_name text,payload jsonb)
-returns jsonb language plpgsql security definer set search_path=public,pg_temp as $$
+returns jsonb language plpgsql security definer set search_path=public,extensions,pg_temp as $$
 declare
  c public.sungira_collections%rowtype;
  role_name text; d jsonb; item jsonb; person jsonb; ledger jsonb; people jsonb; rec jsonb;

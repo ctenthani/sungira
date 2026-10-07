@@ -7,7 +7,7 @@ create table if not exists public.sungira_payment_intents (
 alter table public.sungira_payment_intents enable row level security;
 revoke all on public.sungira_payment_intents from anon,authenticated;
 create or replace function public.sungira_reserve_payment(actor_id uuid,actor_email text,collection_id uuid,member_id text,amount numeric,tx_ref text)
-returns jsonb language plpgsql security definer set search_path=public,pg_temp as $$
+returns jsonb language plpgsql security definer set search_path=public,extensions,pg_temp as $$
 declare c public.sungira_collections%rowtype;d jsonb;role_name text;entry jsonb;
 begin
  select * into c from public.sungira_collections where id=collection_id for update;
@@ -25,7 +25,7 @@ begin
  return jsonb_build_object('tx_ref',tx_ref,'name',d->>'name');
 end;$$;
 create or replace function public.sungira_settle_payment(transaction_ref text,verified_amount numeric,verified_currency text,verified_mode text,provider_fee numeric)
-returns jsonb language plpgsql security definer set search_path=public,pg_temp as $$
+returns jsonb language plpgsql security definer set search_path=public,extensions,pg_temp as $$
 declare intent public.sungira_payment_intents%rowtype;c public.sungira_collections%rowtype;d jsonb;ledger jsonb;rec jsonb;
 begin
  select * into intent from public.sungira_payment_intents where tx_ref=transaction_ref for update;

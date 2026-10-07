@@ -5,7 +5,7 @@ end $$;
 create or replace function public.sungira_name_key(n text) returns text language sql immutable as $$select lower(trim(regexp_replace(n,'^(Bambo ndi May[io]|Bambo|Mayi|Mai|Pa)\s+','','i')))$$;
 revoke all on function public.sungira_name_key(text) from public,anon,authenticated;
 create or replace function public.sungira_action(actor_id uuid,actor_email text,action_name text,payload jsonb)
-returns jsonb language plpgsql security definer set search_path=public,pg_temp as $$
+returns jsonb language plpgsql security definer set search_path=public,extensions,pg_temp as $$
 declare c public.sungira_collections%rowtype;d jsonb;r jsonb;item jsonb;person jsonb;x jsonb;people jsonb;items jsonb;nm text;pid text;role_name text;quantity numeric;logtext text;seed jsonb;
 begin
  if action_name='create' then
