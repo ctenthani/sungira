@@ -223,3 +223,11 @@ Deploy to Netlify and install the updated APK to apply both changes. No database
 Inside a collection, owners and treasurers can use Start another activity. The form pre-fills the same group name and collection use, offers church and savings activity suggestions, and creates a fresh activity with its own records and member link. Coloured group-activity buttons switch between accessible activities sharing the group name. Officer access is activity-specific: invite other officers through Group access on the new activity when needed. No automatic copying of payments, items or contributors occurs. Existing group-wide reports can consolidate accessible activities by group name.
 
 Redeploy to Netlify; no SQL or APK update is required. Browser checks verified the sibling switcher and pre-filled new-activity form, along with existing mobile and edit-protection checks.
+
+## Version 13 — combined group account for a reporting period
+
+Group account & reports opens the combined report for the current activity's start/end dates. Reports default to all accessible activities with the same group name, and support exact reporting dates instead of only whole calendar years. Cash receipts and payments are filtered by those dates, with opening cash derived from earlier confirmed records and separate activity/category detail. Pending payments are excluded.
+
+Start another activity now uses a short form: activity name, inherited reporting start/end dates, optional target and public-link switch. Group identity and collection use are inherited. Payments and membership remain activity-specific. Officers must have access to every activity they expect in the combined report; the interface does not bypass account permissions.
+
+No new SQL or APK is needed. Model tests verified combined receipts/spending, period boundaries, opening cash, pending and unrelated-group exclusion, and the new-activity payload. The unavailable screenshot could not be checked, so no specific screenshot error has been independently diagnosed.
