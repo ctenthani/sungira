@@ -209,3 +209,17 @@ The Reports tab now produces a workbook-style income and expenditure account ins
 - The supplied St. Ignatius financial records are used as a layout reference only; no source transactions or members have been imported into another group's ledger.
 
 Validation: browser tests checked prior-year opening balances, quarter boundaries, pending exclusion, cash reconciliation, mobile widths and existing public/officer posters. Generated Excel was parsed independently for sheet structure, numeric totals and formulas. The rebuilt preview APK passed signature verification; a physical Android installation and Excel application rendering have not been tested.
+
+## Version 11 — mobile readability and calmer updates
+
+Collection cards now have stable colour backgrounds and top accents. Automatic refresh runs every 60 seconds and pauses while a dialog is open, an input is focused, or input was changed in the last minute. An in-flight automatic response also checks editing state before replacing the view. Manual refresh stays available.
+
+Contributor, payment and spending tables become labelled cards on narrow screens. Names, numbers, month coverage and buttons no longer squeeze into narrow columns. Report and receipt tables retain their document layout. The Android Home/Open group link/Refresh top toolbar is removed; bottom navigation remains, and the offline panel has a Retry button.
+
+Deploy to Netlify and install the updated APK to apply both changes. No database migration is required. Verified widths 320/390/430, colour backgrounds, minute polling, edit protection and no browser errors. APK signature verification passed; physical-device testing remains outstanding.
+
+## Version 12 — activities within a group
+
+Inside a collection, owners and treasurers can use Start another activity. The form pre-fills the same group name and collection use, offers church and savings activity suggestions, and creates a fresh activity with its own records and member link. Coloured group-activity buttons switch between accessible activities sharing the group name. Officer access is activity-specific: invite other officers through Group access on the new activity when needed. No automatic copying of payments, items or contributors occurs. Existing group-wide reports can consolidate accessible activities by group name.
+
+Redeploy to Netlify; no SQL or APK update is required. Browser checks verified the sibling switcher and pre-filled new-activity form, along with existing mobile and edit-protection checks.

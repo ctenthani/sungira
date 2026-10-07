@@ -1,1 +1,1 @@
-{"name":"sungira","version":"10.0.0","private":true,"engines":{"node":">=20"},"scripts":{"build":"node build.cjs"}}
+{"name":"sungira","version":"12.0.0","private":true,"engines":{"node":">=20"},"scripts":{"build":"node build.cjs"}}
