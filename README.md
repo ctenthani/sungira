@@ -239,3 +239,11 @@ If creating an activity shows this error, run `database/fix-pgcrypto.sql` in the
 The screenshot's creation error occurred at token generation inside the transaction, so that failed request did not commit a new activity. Fresh setup functions also include Supabase's standard extensions schema in their search paths. Existing installations need the fix script above.
 
 Validation of the crypto fix: reproduced the exact missing-function error with pgcrypto installed in the extensions schema and the complete versioned RPC chain. Confirmed the failed create rolled back, then applied the fix and created an activity successfully with a 48-character token. Rerunning the fix preserved that activity and its token. These were local PostgreSQL-compatible tests, not a write to the live Supabase project.
+
+## Version 14 — reuse group names in activities
+
+Run `database/upgrade-v14.sql` in Supabase after the v8 migration and the pgcrypto fix, then deploy this package. New activities created using Start another activity copy the names and contact numbers from the signed-in officer's accessible activities in the same group. Copied members receive fresh activity IDs and zero pledges; financial records are not copied. Explicit anonymity and hidden-name preferences are preserved. Duplicate full names are matched without stripping titles. Distinct people with the same full name should use distinguishable names.
+
+Use Load group names under People & pledges to add missing names to an existing open activity. It preserves existing member IDs, pledges and payment references and does not add an already-present full name again. Later name additions in another activity can be brought across with this button. This is not a live global member registry; editing a name in one activity does not rewrite another activity's historical receipts.
+
+Tested automatic copying, zero pledges, fresh IDs, empty new ledger, anonymity preservation, repeat loading without duplicates, officer permission enforcement and rerunnable migration with the complete database RPC chain.
