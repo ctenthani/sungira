@@ -263,3 +263,11 @@ Verified grouped navigation, context-sensitive church actions, group-income cash
 The monthly member report now includes only members with confirmed individual Contribution entries in the selected year and reporting dates. An activity such as Chopeleka with group receipts no longer creates a zero-valued row for every copied member. Members are still available for selection when recording an individual payment. Group receipts have a separate Group income schedule with activity, income type, source, amount and reference, and remain included in cash and income totals. Group income never counts toward a person's pledge or monthly coverage. The detailed activity report also omits un-attributable member rows.
 
 Screen, HTML/print and Excel reports use the same revised schedules. No SQL or APK update is required. Model checks covered group-only income and mixed individual/group receipts, verifying that individual totals exclude all group receipts while cash totals retain both.
+
+## Version 16 — activity payment nature and renaming
+
+Run `database/upgrade-v16.sql` after v15, then deploy. Activity creation now asks for Individual or Group payment nature. Individual activities inherit accessible group names and select a member for payments. Group activities start with no member list, hide name-management tools, and open the group-income form directly. The server enforces the chosen nature, including blocking name imports into Group activities.
+
+Edit activity allows owners and treasurers to change the activity name and nature. Existing unclassified activities retain Mixed behaviour until explicitly classified. A nature change that contradicts stored payments is rejected to preserve attribution history; Mixed remains available for those activities. Renaming preserves the activity ID, existing member link and ledger. Existing activities may be classified as Group without deleting stored names; the names are hidden from the Group interface and report, and are not used for income attribution.
+
+Verified new Group activities have zero members, member loading is blocked, the nature is persisted, and renaming preserves activity identity. No new APK is needed.
