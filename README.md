@@ -271,3 +271,7 @@ Run `database/upgrade-v16.sql` after v15, then deploy. Activity creation now ask
 Edit activity allows owners and treasurers to change the activity name and nature. Existing unclassified activities retain Mixed behaviour until explicitly classified. A nature change that contradicts stored payments is rejected to preserve attribution history; Mixed remains available for those activities. Renaming preserves the activity ID, existing member link and ledger. Existing activities may be classified as Group without deleting stored names; the names are hidden from the Group interface and report, and are not used for income attribution.
 
 Verified new Group activities have zero members, member loading is blocked, the nature is persisted, and renaming preserves activity identity. No new APK is needed.
+
+
+### v16.1 — Zodyetsa Ansembe cash roster
+In Charles Lwanga’s Zodyetsa Ansembe activity, People & pledges shows only names with cash pledges or confirmed/pending individual cash entries. The full saved group roster remains available for income and in-kind donor selection. The public cash list shows only cash pledges or received cash; donor privacy and the goods/services checklist are retained. Web-only change; no SQL or APK update required.
