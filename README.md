@@ -1,8 +1,18 @@
-# Sungira — shared group collections (version 9)
+# Sungira — shared group collections
+
+## Current deployment and migration checklist (11 October 2026)
+
+Production is https://sungira.netlify.app, backed by the Sungira Supabase project. The version notes below are historical. Apply missing database upgrades in order through v16, then `database/upgrade-v17.sql`; never rerun initial setup over a current installation without reviewing the installed function chain.
+
+Run `npm test` and `npm run build`, deploy through the connected Netlify repository, and verify the published commit. Database fixtures in `database/verification-rollback.sql` run in a transaction and roll back their synthetic accounts, groups and entries. Keep service credentials in Netlify environment variables, never public assets.
+
+Version 17 checks verified actor identity, makes received-payment retries idempotent, rejects reused group bank references and protects provider receipts from manual voiding. Settlement requires a matching pending reservation. Backend and browser requests time out without automatic financial retries. Refresh records or use Check payment after an uncertain result. CSV exports neutralise formula-leading control characters and full-width variants; XLSX remains preferable for financial review.
+
+Online PayChangu checkout remains disabled unless its merchant settings are configured. A real payment, refund, account invitation or Android device test was not performed by these regression checks. Reports currently combine accessible activities with the same group name; use activity scope when two groups have matching names.
 
 This package upgrades the original browser ledger to a shared application backed by Supabase and Netlify Functions. It contains account registration, email confirmation, sign-in, password recovery, shared group access, public progress pages, treasurer payment review, optional verified PayChangu checkout, contribution/expense ledgers and expenditure reports.
 
-The package is implemented and locally tested, but is NOT connected to a live Supabase project, email service or PayChangu account, and has NOT been deployed. Do not announce live registration or payment collection until setup and live checks below are complete.
+The original version 9 setup instructions below describe installation on a new project. Refer to the current checklist above for the existing live deployment. Payment collection still requires the appropriate live provider configuration and verification.
 
 ## Update your existing live Sungira site
 
