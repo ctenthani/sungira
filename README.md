@@ -1,3 +1,15 @@
+# Village bank and PDF receipts — v18
+
+Each dedicated savings activity now has a **Village bank** tab. Its owner explicitly classifies contributions as member savings and approves a savings multiple, rate, interest basis and meeting reference. Separate groups choose separate rules. New loans are checked against net member savings, all outstanding principal and available group cash under a database row lock. Earlier loan agreements are preserved. A savings withdrawal is a return of capital, with loan security reserved, not an operating expense. Repayments split principal and interest; unpaid interest is not cash or realised profit. Retained surplus remains with the group; automatic dividend allocation and cycle share-out are not included.
+
+Use **Compare options** for three hypothetical options with identical capital and term, explicit rate basis, fees, principal-loss assumptions and liquidity/risk notes. It does not execute an investment, reserve funds or write the ledger. Monthly-simple lending assumes capital is outstanding for the whole term, not a declining loan balance or a revolving portfolio. Taxes and inflation are not modelled.
+
+Confirmed contributions, loan repayments and savings withdrawals have genuine PDF receipts. The share button hands the PDF to the device chooser; select WhatsApp and the recipient. Unsupported browsers download the PDF for manual attachment. Receipts are generated locally with an embedded Noto Sans font; they are not uploaded to a public document server. Cancellation never retries or sends a message automatically. The updated Android preview v18 accepts PDF files and declares the PDF MIME type through its read-only file provider. It uses the same preview signing certificate as v9. Existing installations must install the updated preview from the footer. Physical WhatsApp delivery still depends on the device and recipient selection.
+
+Deployment: install `database/upgrade-v18.sql` after v17, then `npm ci`, `npm test`, `npm run build`. `database/bank-verification-rollback.sql` contains synthetic fixtures to run inside BEGIN/ROLLBACK. The existing security fixtures must still pass. Never execute the test fixtures outside a rollback transaction. Build dependencies and fonts are local, with licences copied to public/vendor. The generated public directory excludes SQL, source setup and private configuration.
+
+---
+
 # Sungira — shared group collections
 
 ## Current deployment and migration checklist (11 October 2026)

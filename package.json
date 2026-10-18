@@ -1,12 +1,15 @@
 {
   "name": "sungira",
-  "version": "16.1.0",
+  "version": "18.0.0",
   "private": true,
   "engines": {
     "node": ">=20"
   },
   "scripts": {
     "build": "node build.cjs",
-    "test": "node tests/security-checks.cjs"
+    "test": "node tests/security-checks.cjs && node --test tests/bank.test.cjs tests/receipt.test.cjs"
+  },
+  "dependencies": {
+    "jspdf": "4.2.1"
   }
 }

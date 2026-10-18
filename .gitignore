@@ -4,3 +4,6 @@
 .env.*
 !.env.example
 *.log
+
+/android/build-v18/
+/android/build/

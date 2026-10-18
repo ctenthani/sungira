@@ -35,6 +35,7 @@ function reset(){settlements=0;providerCalls=0;intent={actor_id:'owner',collecti
  const model=scope=>vm.runInContext(`reportModel(first,{scope:'${scope}',from:'2026-10-01',to:'2026-10-31',start:2026,end:2026})`,context);
  await check('Group report excludes other groups, pending, voided and out-of-period entries',async()=>{const m=model('group');assert.equal(m.opening,50);assert.equal(m.received,120);assert.equal(m.spent,25);assert.equal(m.closing,145);assert.equal(m.pending.length,1);assert.equal(m.sources.length,2)});
  await check('Activity report excludes sister activity',async()=>{const m=model('activity');assert.equal(m.received,100);assert.equal(m.closing,125)});
+ await check('Savings withdrawals appear in cash reports without becoming a contribution',async()=>{first.data.ledger.push(entry('Savings withdrawal',10,'2026-10-05'));const m=model('activity');assert.equal(m.received,100);assert.equal(m.spent,35);assert.equal(m.closing,115);first.data.ledger.pop();});
  first.data.ledger[0].payee='=HYPERLINK("https://example.invalid")';
  context.exportModel=model('group');
  assert.ok(vm.runInContext('reportXlsx(exportModel)',context).length>0);
