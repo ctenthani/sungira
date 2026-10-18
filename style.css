@@ -20,3 +20,5 @@
 .group-activities{margin:18px 0;padding:16px;background:white;border:1px solid var(--line);border-radius:16px}.group-activities h2{margin:0;font-size:20px}.activity-switcher{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.activity-chip{background:hsl(var(--collection-hue) 55% 94%);border-color:hsl(var(--collection-hue) 35% 70%);text-align:left}.activity-chip.selected{box-shadow:inset 0 0 0 2px #173f35;font-weight:700}@media print{.group-activities{display:none}}
 
 .scenario-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}.scenario-grid fieldset{min-width:0;border:1px solid #ccd7d1;border-radius:12px;padding:18px}.scenario-grid legend{padding:0 8px;font-weight:700}
+
+.letter-receipt .receipt-heading h1{color:#173f35}.letter-receipt .receipt-heading{background:white;color:#173f35}
