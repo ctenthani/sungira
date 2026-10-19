@@ -38,6 +38,17 @@ function reset(){settlements=0;providerCalls=0;intent={actor_id:'owner',collecti
  await check('Savings withdrawals appear in cash reports without becoming a contribution',async()=>{first.data.ledger.push(entry('Savings withdrawal',10,'2026-10-05'));const m=model('activity');assert.equal(m.received,100);assert.equal(m.spent,35);assert.equal(m.closing,115);first.data.ledger.pop();});
  await check('Once-off reports omit quarterly and monthly schedules in screen and workbook model',async()=>{first.data.paymentFrequency='Once-off';const m=model('activity');assert.equal(m.simple,true);assert.equal(m.sheets[0].rows.find(r=>r[0]==='Activity / category').length,2);assert.ok(!m.sheets.some(s=>s.name==='Quarterly balances'||s.name.startsWith('Members ')));context.compactModel=m;const xlsx=vm.runInContext('reportXlsx(compactModel)',context);assert.ok(!new TextDecoder().decode(xlsx).includes('<f>'));});
  await check('Monthly and mixed accounts retain quarterly view; explicit simple layout remains available',async()=>{first.data.paymentFrequency='Monthly';assert.equal(model('activity').simple,false);assert.ok(model('group').sheets.some(s=>s.name==='Quarterly balances'));assert.equal(vm.runInContext("reportModel(first,{scope:'activity',from:'2026-10-01',to:'2026-10-31',start:2026,end:2026,layout:'simple'})",context).simple,true);first.data.paymentFrequency='Once-off';});
+ await check('Pledge balance credits prior payments and excludes later, pending and voided contributions without offsetting other members',async()=>{
+  context.pledgeFixture={id:'pledges',data:{name:'Test pledges',paymentFrequency:'Once-off',members:[{id:'a',name:'A',pledge:100},{id:'b',name:'B',pledge:100}],ledger:[
+   {member:'a',kind:'Contribution',amount:150,status:'Confirmed',date:'2026-09-01'},
+   {member:'b',kind:'Contribution',amount:20,status:'Confirmed',date:'2026-10-02'},
+   {member:'b',kind:'Contribution',amount:80,status:'Pending',date:'2026-10-03'},
+   {member:'b',kind:'Contribution',amount:80,status:'Voided',date:'2026-10-04'},
+   {member:'b',kind:'Contribution',amount:80,status:'Confirmed',date:'2026-11-01'}]}};
+  const m=vm.runInContext("reportModel(pledgeFixture,{scope:'activity',from:'2026-10-01',to:'2026-10-31',start:2026,end:2026})",context);
+  assert.equal(m.pledges.total,200);assert.equal(m.pledges.before,150);assert.equal(m.pledges.period,20);assert.equal(m.pledges.paid,170);assert.equal(m.pledges.outstanding,80);
+  assert.equal(m.sheets.find(s=>s.name==='Pledge balances').rows[2][6],80);
+ });
  first.data.ledger[0].payee='=HYPERLINK("https://example.invalid")';
  context.exportModel=model('group');
  assert.ok(vm.runInContext('reportXlsx(exportModel)',context).length>0);
