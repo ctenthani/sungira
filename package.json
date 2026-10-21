@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build": "node build.cjs",
-    "test": "node tests/security-checks.cjs && node --test tests/bank.test.cjs tests/receipt.test.cjs tests/frequency.test.cjs"
+    "test": "node tests/security-checks.cjs && node --test tests/bank.test.cjs tests/receipt.test.cjs tests/frequency.test.cjs tests/public-account.test.cjs"
   },
   "dependencies": {
     "jspdf": "4.2.1"
